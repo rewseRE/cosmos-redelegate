@@ -1,17 +1,6 @@
 #!/bin/bash
 
-CLI=""
-CHAIN=""
-CLAIM_THR=""
-DELEGATE_THR=""
-REMAINDER=""
-DENOM=""
-NODE='http://localhost:26657'
-FEES=""
-KEY_NAME=""
-ADDR=""
-OPER=""
-PASS=""
+source $(dirname $(readlink -e $0))/config
 
 REWARDS=$($CLI query distribution rewards $ADDR $OPER --node $NODE --output json | jq -r '.rewards[0].amount')
 COMMISSION=$($CLI query distribution commission $OPER --node $NODE --output json | jq -r '.commission[0].amount')

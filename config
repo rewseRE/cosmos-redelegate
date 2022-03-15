@@ -1,0 +1,13 @@
+CLI=""
+CHAIN=""
+CLAIM_THR=""
+DELEGATE_THR=""
+REMAINDER=""
+DENOM=""
+NODE='http://localhost:26657'
+FEES=""
+KEY_NAME=""
+ADDR=""
+OPER=""
+PASS=""
+
