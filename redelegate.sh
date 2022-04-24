@@ -2,8 +2,8 @@
 
 source $(dirname $(readlink -e $0))/config
 
-REWARDS=$($CLI query distribution rewards $ADDR $OPER --node $NODE --output json | jq -r '.rewards[0].amount')
-COMMISSION=$($CLI query distribution commission $OPER --node $NODE --output json | jq -r '.commission[0].amount')
+REWARDS=$($CLI query distribution rewards $ADDR $OPER --node $NODE --output json | jq -r ".rewards[] | select (.denom == \"$DENOM\").amount")
+COMMISSION=$($CLI query distribution commission $OPER --node $NODE --output json | jq -r ".commission[] | select (.denom == \"$DENOM\").amount")
 
 AMOUNT=$((${REWARDS%.*}+${COMMISSION%.*}))
 
@@ -12,7 +12,7 @@ if (($AMOUNT > $CLAIM_THR)); then
     sleep 10
 fi
 
-BAL=$($CLI query bank balances $ADDR --node $NODE --output json | jq -r '.balances[0].amount')
+BAL=$($CLI query bank balances $ADDR --node $NODE --output json | jq -r ".balances[] | select (.denom == \"$DENOM\").amount")
 BALANCE=${BAL%.*}
 
 if (($BALANCE > $DELEGATE_THR)); then
