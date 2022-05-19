@@ -8,7 +8,7 @@ COMMISSION=$($CLI query distribution commission $OPER --node $NODE --output json
 AMOUNT=$((${REWARDS%.*}+${COMMISSION%.*}))
 
 if (($AMOUNT > $CLAIM_THR)); then
-    echo -e $PASS | $($CLI tx distribution withdraw-rewards $OPER --commission --from $KEY_NAME --chain-id $CHAIN --fees $FEES$DENOM --yes --node $NODE)
+    echo -e $PASS | $($CLI tx distribution withdraw-rewards $OPER --commission --from $KEY_NAME --chain-id $CHAIN --gas auto --fees $FEES$DENOM --yes --node $NODE)
     sleep 10
 fi
 
@@ -17,5 +17,5 @@ BALANCE=${BAL%.*}
 
 if (($BALANCE > $DELEGATE_THR)); then
     SUM=$((BALANCE-REMAINDER))
-    echo -e $PASS | $($CLI tx staking delegate $OPER $SUM$DENOM --chain-id=$CHAIN --from $KEY_NAME --fees $FEES$DENOM --yes --node $NODE)
+    echo -e $PASS | $($CLI tx staking delegate $OPER $SUM$DENOM --chain-id=$CHAIN --from $KEY_NAME --gas auto --fees $FEES$DENOM --yes --node $NODE)
 fi
