@@ -2,8 +2,11 @@
 
 source $(dirname $(readlink -e $0))/config
 
-REWARDS=$($CLI query distribution rewards $ADDR $OPER --node $NODE --output json | jq -r ".rewards[] | select (.denom == \"$DENOM\").amount")
-COMMISSION=$($CLI query distribution commission $OPER --node $NODE --output json | jq -r ".commission[] | select (.denom == \"$DENOM\").amount")
+#REWARDS=$($CLI query distribution rewards $ADDR $OPER --node $NODE --output json | jq -r ".rewards[] | select (.denom == \"$DENOM\").amount")
+REWARDS=$($CLI query distribution rewards $ADDR --node $NODE --output json | jq -r ".rewards[] | select (.validator_address == \"$OPER\").reward[] | select (contains \"$DENOM\")" | cut -d'.' -f1)
+#COMMISSION=$($CLI query distribution commission $OPER --node $NODE --output json | jq -r ".commission[] | select (.denom == \"$DENOM\").amount")
+COMMISSION=$($CLI query distribution commission $OPER --node $NODE --output json | jq -r ".commission.commission[] | select (contains(\"$DENOM\"))" | cut -d'.' -f1)
+
 
 AMOUNT=$((${REWARDS%.*}+${COMMISSION%.*}))
 
